@@ -16,7 +16,6 @@ const (
 var (
 	notifiedInLowLevelLimit  bool
 	notifiedInHighLevelLimit bool
-	lastSavedBatteryLevel    int
 )
 
 func main() {
@@ -30,11 +29,7 @@ func main() {
 			time.Sleep(30 * time.Second)
 			continue
 		}
-		if lastSavedBatteryLevel != 0 {
-			fmt.Printf("last level = %d%%\n", lastSavedBatteryLevel)
-		} else {
-			fmt.Printf("last level = --\n")
-		}
+
 		fmt.Printf("current level = %d%%\n", level)
 		isCharging, err := isChargerConnected()
 		if err != nil {
@@ -43,7 +38,12 @@ func main() {
 		}
 		fmt.Printf("charger connected = %v\n", isCharging)
 
-		if isCharging && level >= highLevelLimit && !notifiedInHighLevelLimit && lastSavedBatteryLevel != 0 && level > lastSavedBatteryLevel {
+		if level > lowLevelLimit && level < highLevelLimit {
+			notifiedInLowLevelLimit = false
+			notifiedInHighLevelLimit = false
+		}
+
+		if isCharging && level >= highLevelLimit && !notifiedInHighLevelLimit {
 			err := sendNotification(
 				"Bateria carregada",
 				fmt.Sprintf("Bateria em %d%%. Considere desconectar o carregador.", level),
@@ -53,10 +53,9 @@ func main() {
 			}
 
 			notifiedInHighLevelLimit = true
-			notifiedInLowLevelLimit = false
 		}
 
-		if !isCharging && level <= lowLevelLimit && !notifiedInLowLevelLimit && lastSavedBatteryLevel != 0 && level < lastSavedBatteryLevel {
+		if !isCharging && level <= lowLevelLimit && !notifiedInLowLevelLimit {
 			err := sendNotification(
 				"Bateria baixa",
 				fmt.Sprintf("Bateria em %d%%. Considere conectar o carregador.", level),
@@ -66,10 +65,8 @@ func main() {
 			}
 
 			notifiedInLowLevelLimit = true
-			notifiedInHighLevelLimit = false
 		}
 
-		lastSavedBatteryLevel = level
 		time.Sleep(sleepTimeInSeconds * time.Second)
 	}
 }
