@@ -50,6 +50,7 @@ func main() {
 			)
 			if err != nil {
 				fmt.Println("Erro ao enviar notificação:", err)
+				continue
 			}
 
 			notifiedInHighLevelLimit = true
@@ -62,6 +63,7 @@ func main() {
 			)
 			if err != nil {
 				fmt.Println("Erro ao enviar notificação:", err)
+				continue
 			}
 
 			notifiedInLowLevelLimit = true
