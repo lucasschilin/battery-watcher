@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func isChargerConnected() (bool, error) {
-	data, err := os.ReadFile(chargerPath)
+func isChargerConnected(path string) (bool, error) {
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return false, err
 	}

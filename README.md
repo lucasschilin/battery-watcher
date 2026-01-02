@@ -77,8 +77,10 @@ mv bin/battery-watcher ~/.local/bin/
 
 ## ⚙️ Running as a systemd user service
 
-Create the service file:
+Create the following service file:
+`~/.config/systemd/user/battery-watcher.service`
 
+Add the content below:
 ```ini
 [Unit]
 Description=Battery Watcher (30% / 80%)
@@ -115,6 +117,43 @@ View logs:
 ```bash
 journalctl --user -u battery-watcher.service -f
 ```
+
+---
+
+## ⚙️ Configuration (optional)
+Battery Watcher works out of the box using default values.
+Creating a configuration file is optional and allows you to customize thresholds, paths, and polling interval.
+
+### Configuration file location
+Create the following config file:
+`~/.config/battery-watcher/config.yaml`
+If the file does not exist, the application will automatically use its default settings.
+
+### Example configuration
+```yaml
+battery:
+  # Path used to read the current battery percentage
+  path: /sys/class/power_supply/BAT0/capacity
+
+  # Minimum battery percentage before notifying to connect the charger
+  low_level_limit: 30
+
+  # Maximum battery percentage before notifying to disconnect the charger
+  high_level_limit: 80
+
+charger:
+  # Path used to detect if the AC adapter is connected (1 = connected, 0 = disconnected)
+  path: /sys/class/power_supply/AC/online
+
+# Interval (in seconds) between battery checks
+sleep_time_in_seconds: 60
+```
+
+### Notes
+All values shown above are the default ones
+You can override only the fields you want
+Missing fields will automatically fall back to defaults
+The configuration follows the standard XDG directory 
 
 ---
 
