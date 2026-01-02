@@ -7,7 +7,7 @@
 **Battery Watcher** is a lightweight background service written in Go that monitors laptop battery levels and AC power status on Linux systems and sends desktop notifications when predefined charge thresholds are reached.
 
 The project is intentionally minimal, focused on reliability, low resource usage, and direct interaction with the Linux power subsystem.
-
+The project use Viper to load configs.
 ---
 
 ## ⚙️ Prerequisites

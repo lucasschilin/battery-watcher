@@ -31,9 +31,3 @@ func LoadConfig() AppConfig {
 
 	return config
 }
-
-// batteryPath        = "/sys/class/power_supply/BAT0/capacity"
-// 	chargerPath        = "/sys/class/power_supply/AC/online"
-// 	sleepTimeInSeconds = 60
-// 	highLevelLimit     = 80
-// 	lowLevelLimit      = 30
